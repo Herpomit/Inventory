@@ -9,5 +9,6 @@ namespace Inventory.Repository.IdentityModels
 {
     public class Users : IdentityUser<int>
     {
+        public ICollection<Roles> Roles { get; set; }
     }
 }

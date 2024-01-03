@@ -307,6 +307,11 @@ namespace Inventory.Repository.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<int>");
 
+                    b.Property<int?>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("UsersId");
+
                     b.HasDiscriminator().HasValue("Roles");
 
                     b.HasData(
@@ -335,16 +340,16 @@ namespace Inventory.Repository.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "84e22835-568a-47be-b748-cb932ecfab23",
+                            ConcurrencyStamp = "1f96261b-cd9b-407b-8e32-aa67a60b092e",
                             Email = "info@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "INFO@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAECXXl/ah66woRSls1Q5JwydK1MtirNswQe0aKDKnpTSRYLm6TZ01PaNwSAKFteD6Sg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE7KgfiMGu5s1JHHGAruq/RIB9T73v6MjChhsd+VlCNh0VwCE7qclXQQOyUu0pFzHA==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "315a4a60-c526-4ad7-8da7-a78ea2a08e27",
+                            SecurityStamp = "69e661a7-4eeb-465f-8474-65d73fabce00",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -378,6 +383,18 @@ namespace Inventory.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Inventory.Repository.IdentityModels.Roles", b =>
+                {
+                    b.HasOne("Inventory.Repository.IdentityModels.Users", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UsersId");
+                });
+
+            modelBuilder.Entity("Inventory.Repository.IdentityModels.Users", b =>
+                {
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

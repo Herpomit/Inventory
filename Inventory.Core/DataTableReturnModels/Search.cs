@@ -8,7 +8,7 @@ namespace Inventory.Core.DataTableReturnModels
 {
     public class Search
     {
-        public string regex { get; set; }
+        public bool regex { get; set; }
 
         public string value { get; set; }
     }

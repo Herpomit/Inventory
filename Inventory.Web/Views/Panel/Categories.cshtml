@@ -12,6 +12,9 @@
     <script src="~/Panel/plugins/datatables/datatables.min.js"></script>
     <script src="~/Panel/js/pages/datatables.js"></script>
     <script src="~/Ajax/Categories/table.js" asp-append-version="true" type="module"></script>
+    <script src="~/Ajax/Categories/Add.js" asp-append-version="true" type="module"></script>
+    <script src="~/Ajax/Categories/Edit.js" asp-append-version="true" type="module"></script>
+    <script src="~/Ajax/Categories/Delete.js" asp-append-version="true" type="module"></script>
 }
 
 @if (TempData["Message"] != null)
@@ -29,7 +32,7 @@
                     <div class="row">
                         <div class="col-xl-3">
                             <a class="btn btn-primary btn-lg btn-block" style="width: 100%;"
-                               href="/Panel/CategoryAdd">Kategori Ekle</a>
+                               data-bs-toggle="modal" data-bs-target="#addModal" href="#">Kategori Ekle</a>
                         </div>
                         <div class="col-xl-3">
                             <button class="btn btn-warning btn-lg" onclick="reloadDataTable()" style="width: 100%;">Tabloyu Yenile</button>
@@ -63,6 +66,58 @@
 </section>
 
 @section Modals {
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kategori Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addForm">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="addName" class="mb-3">Kategori Adı <i class="text-danger">*</i></label>
+                                <input type="text" id="addName" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Kaydet</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kategori Güncelle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="categoryId" />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="editName" class="mb-3">Kategori Adı <i class="text-danger">*</i></label>
+                                <input type="text" id="editName" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Kaydet</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">

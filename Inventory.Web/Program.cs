@@ -43,7 +43,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterModule(new RepoServiceModule());
 });
-builder.Services.AddScoped<IUserService<Users>, UserService>();
 
 builder.Services.ConfigureApplicationCookie(opt =>
 {

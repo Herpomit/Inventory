@@ -1,11 +1,6 @@
 ﻿using Inventory.Core.DataTableReturnModels;
 using Inventory.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Inventory.Core.Services
 {
@@ -13,7 +8,7 @@ namespace Inventory.Core.Services
     {
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task<T> GetByIdAsync(int id);
+        Task<UserViewModel> GetByIdAsync(int id);
 
         Task<UserReturnModel> UserTableAsync(int draw, int start, int length, string orderColumnName, string orderDir, [FromForm] Search search);
 
@@ -24,6 +19,10 @@ namespace Inventory.Core.Services
         Task<(bool isSuccess, string message)> Delete(int id);
 
         Task Logout();
+
+        Task<IEnumerable<string>> GetUserRole(int id);
+
+        Task<IEnumerable<RoleViewModel>> GetRolesAsync();
 
         Task<(bool isSuccess, string message)> LoginAsync(LoginViewModel model);
     }

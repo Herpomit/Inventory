@@ -1,17 +1,18 @@
-﻿function DropDown(data) {
-
+﻿function Dropdown(data) {
+    // data parametresi ile id'yi alıyoruz
     return `
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
         Action
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editModal" data-id="${data}">Edit</a></li>
-            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${data}">Delete</a></li>
+            <li><a class="dropdown-item" href="/Panel/UserEdit/${data}">Güncelle</a></li>
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${data}">Sil</a></li>
         </ul>
     `;
 
 }
+
 
 $(document).ready(function () {
 
@@ -25,7 +26,7 @@ $(document).ready(function () {
             }
         },
         "ajax": {
-            "url": "/Category/CategoryTable",
+            "url": "/User/UserTable",
             "type": "POST",
             "dataType": "json",
             "data": function (d) {
@@ -34,12 +35,15 @@ $(document).ready(function () {
                     d.orderColumnName = d.columns[d.orderColumnIndex].data;
                     d.orderDir = d.order[0].dir;
                 }
+
             }
         },
         "rowId": 'id',
         "columns": [
-            { data: "name" },
-            { data: "id", render: DropDown, "orderable": false, "searchable": false, "width": "150px" },
+            { data: "userName" },
+            { data: "email" },
+            { data: "phoneNumber" },
+            { data: "id", render: Dropdown, "orderable": false, "searchable": false, "width": "150px" },
         ],
         "language": {
             url: "/Ajax/languagev2.json"

@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "UserAdd";
+    ViewBag.Users = "active";
+}
+
+@section Scripts {
+    <script src="~/Ajax/Users/Add.js" asp-append-version="true" type="module"></script>
+    <script src="~/Panel/plugins/input-mask/jquery.inputmask.min.js"></script>
+    <script>
+        $('#role').select2({
+            placeholder: 'Seçiniz',
+        });
+
+        $('#phoneNumber').inputmask({ "mask": "(999) 999-9999" });
+    </script>
+}
+
+
+<form id="addForm" class="form-group">
+    <div class="card">
+        <div class="card-header">
+            <h3>Kullanıcı Ekle</h3>
+        </div>
+        <div class="divider"></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xl-6 mb-2">
+                    <label for="userName" class="form-label">Kullanıcı Adı <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Kullanıcı Adı" required>
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="email" class="form-label">Eposta <i class="text-danger">*</i></label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Eposta" required>
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="phoneNumber" class="form-label">Telefon Numarası <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="password" class="form-label">Şifre <i class="text-danger">*</i></label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Şifre" required>
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="passwordConfirm" class="form-label">Şifre Tekrar<i class="text-danger">*</i></label>
+                    <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="Şifre Tekrar" required>
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="role" class="form-label">Yetki Seviyesi <i class="text-danger">*</i></label>
+                    <select id="role" class="form-select">
+                        <option value="" selected disabled>Seçiniz</option>
+                        @foreach (var item in ViewBag.Roles)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+
+                </div>
+                <div class="divider"></div>
+                <div class="col-xl-6">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -17,13 +17,16 @@ namespace Inventory.Service.Services
     {
         private readonly UserManager<Users> _userManager;
         private readonly SignInManager<Users> _signInManager;
+        private readonly RoleManager<Roles> _roleManager;
 
-        public UserService(UserManager<Users> userManager, SignInManager<Users> signInManager)
+        public UserService(UserManager<Users> userManager, SignInManager<Users> signInManager, RoleManager<Roles> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
+        #region User
         public async Task<(bool isSuccess, string message)> Add(UserAddViewModel model)
         {
             var result = await _userManager.CreateAsync(new()
@@ -35,6 +38,11 @@ namespace Inventory.Service.Services
 
             if (result.Succeeded)
             {
+                var role = await _roleManager.FindByIdAsync(model.roleId.ToString());
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                await _userManager.AddToRoleAsync(user!, role!.Name!);
+
                 return (true, "Kullanıcı Başarılı Bir Şekilde Eklendi!");
             }
             else
@@ -66,10 +74,22 @@ namespace Inventory.Service.Services
             return await _userManager.Users.ToListAsync();
         }
 
-        public async Task<Users> GetByIdAsync(int id)
+        public async Task<UserViewModel> GetByIdAsync(int id)
         {
-            return await _userManager.FindByIdAsync(id.ToString());
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            UserViewModel model = new UserViewModel
+            {
+                Id = user!.Id,
+                UserName = user.UserName!,
+                Email = user.Email!,
+                PhoneNumber = user.PhoneNumber!
+            };
+
+            return model;
         }
+
+
 
         public async Task<(bool isSuccess, string message)> LoginAsync(LoginViewModel model)
         {
@@ -103,6 +123,7 @@ namespace Inventory.Service.Services
         public async Task<(bool isSuccess, string message)> Update(UserUpdateViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.Id.ToString());
+            var currentUser = await _userManager.GetUserAsync(_signInManager.Context.User);
             if (user == null)
             {
                 return (false, "Kullanıcı Bulunamadı!");
@@ -117,6 +138,22 @@ namespace Inventory.Service.Services
                 var resultPassword = await _userManager.ResetPasswordAsync(user, token, model.PasswordConfirm);
                 if (resultPassword.Succeeded && result.Succeeded)
                 {
+                    var role = await _roleManager.FindByIdAsync(model.roleId.ToString());
+                    var userRole = await _userManager.GetRolesAsync(user);
+
+                    foreach (var item in userRole)
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, item);
+                    }
+
+                    await _userManager.AddToRoleAsync(user, role!.Name!);
+
+                    await _userManager.UpdateSecurityStampAsync(user);
+                    if (currentUser!.Id == user.Id)
+                    {
+                        await _signInManager.SignOutAsync();
+                        await _signInManager.SignInAsync(user, true);
+                    }
                     return (true, "Kullanıcı Başarılı Bir Şekilde Güncellendi!");
                 }
                 else
@@ -126,6 +163,24 @@ namespace Inventory.Service.Services
             }
             if (result.Succeeded)
             {
+                var role = await _roleManager.FindByIdAsync(model.roleId.ToString());
+                var userRole = await _userManager.GetRolesAsync(user);
+
+                foreach (var item in userRole)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, item);
+                }
+
+                await _userManager.AddToRoleAsync(user, role!.Name!);
+
+                await _userManager.UpdateSecurityStampAsync(user);
+
+                if (currentUser!.Id == user.Id)
+                {
+                    await _signInManager.SignOutAsync();
+                    await _signInManager.SignInAsync(user, true);
+                }
+
                 return (true, "Kullanıcı Başarılı Bir Şekilde Güncellendi!");
             }
             else
@@ -173,5 +228,30 @@ namespace Inventory.Service.Services
                 data = users
             };
         }
+        #endregion
+
+
+        #region Role
+        public async Task<IEnumerable<RoleViewModel>> GetRolesAsync()
+        {
+            var roles = await _roleManager.Roles.Select(x => new RoleViewModel
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToListAsync();
+
+            return roles;
+        }
+
+        public async Task<IEnumerable<string>> GetUserRole(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var roles = await _userManager.GetRolesAsync(user!);
+
+            return roles;
+        }
+        #endregion
+
+
     }
 }

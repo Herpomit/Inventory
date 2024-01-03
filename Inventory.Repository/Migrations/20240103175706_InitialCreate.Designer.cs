@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventory.Repository.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20240102071706_InitialCreate")]
+    [Migration("20240103175706_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -275,6 +275,13 @@ namespace Inventory.Repository.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("EnventoryUserRole", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -303,7 +310,26 @@ namespace Inventory.Repository.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<int>");
 
+                    b.Property<int?>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("UsersId");
+
                     b.HasDiscriminator().HasValue("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Inventory.Repository.IdentityModels.Users", b =>
@@ -311,6 +337,25 @@ namespace Inventory.Repository.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser<int>");
 
                     b.HasDiscriminator().HasValue("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1f96261b-cd9b-407b-8e32-aa67a60b092e",
+                            Email = "info@admin.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "INFO@ADMIN.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE7KgfiMGu5s1JHHGAruq/RIB9T73v6MjChhsd+VlCNh0VwCE7qclXQQOyUu0pFzHA==",
+                            PhoneNumber = "123456789",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "69e661a7-4eeb-465f-8474-65d73fabce00",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Inventory.Core.Models.ProductCategoryMap", b =>
@@ -341,6 +386,18 @@ namespace Inventory.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Inventory.Repository.IdentityModels.Roles", b =>
+                {
+                    b.HasOne("Inventory.Repository.IdentityModels.Users", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UsersId");
+                });
+
+            modelBuilder.Entity("Inventory.Repository.IdentityModels.Users", b =>
+                {
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,77 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "UserEdit";
+    ViewBag.Users = "active";
+}
+
+@section Scripts {
+    <script src="~/Ajax/Users/Edit.js" asp-append-version="true" type="module"></script>
+    <script src="~/Panel/plugins/input-mask/jquery.inputmask.min.js"></script>
+    <script>
+        $('#phoneNumber').inputmask({ "mask": "(999) 999-9999" });
+        $('select').select2();
+    </script>
+}
+
+
+<form id="editForm" class="form-group">
+    <div class="card">
+        <div class="card-header">
+            <h3>Kullanıcı Güncelle</h3>
+        </div>
+        <div class="divider"></div>
+        <div class="card-body">
+            <div class="row">
+                <input type="hidden" hidden id="userId" value="@Model.Id"/>
+                <div class="col-xl-6 mb-2">
+                    <label for="userName" class="form-label">Kullanıcı Adı <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Kullanıcı Adı" required value="@Model.UserName">
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="email" class="form-label">Eposta <i class="text-danger">*</i></label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Eposta" required value="@Model.Email" >
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="phoneNumber" class="form-label">Telefon Numarası <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required value="@Model.PhoneNumber" >
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="password" class="form-label">Şifre </label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Şifre">
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="passwordConfirm" class="form-label">Şifre Tekrar</label>
+                    <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="Şifre Tekrar">
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="role" class="form-label">Yetki Seviyesi <i class="text-danger">*</i></label>
+                    <select id="role" class="form-select" data-plugin-selectTwo>
+                        <option value="" selected disabled>Seçiniz</option>
+                        @{
+                            foreach (var role in ViewBag.Roles)
+                            {
+                                foreach (var userRole in ViewBag.userRole)
+                                {
+                                    if (role.Name == userRole)
+                                    {
+                                        <option value="@role.Id" selected>@role.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@role.Id">@role.Name</option>
+                                    }
+
+                                }
+                            }
+                        }
+                    </select>
+
+                </div>
+                <div class="divider"></div>
+                <div class="col-xl-6">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

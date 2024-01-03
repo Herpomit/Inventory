@@ -1,5 +1,6 @@
 ﻿using Inventory.Core.DataTableReturnModels;
 using Inventory.Core.Services;
+using Inventory.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Web.Controllers
@@ -13,11 +14,80 @@ namespace Inventory.Web.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<JsonResult> CategoryList(int draw, int start, int length, string orderColumnName, string orderDir, [FromForm] Search search)
+        public async Task<JsonResult> CategoryTable(int draw, int start, int length, string orderColumnName, string orderDir, [FromForm] Search search)
         {
             var data = await _service.CategoryTableAsync(draw, start, length, orderColumnName, orderDir, search);
             return Json(new { draw = data.draw, recordsFiltered = data.recordsTotal, recordsTotal = data.recordsTotal, data = data.data });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CategoryAdd(CategoryAddViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { errors = ModelState });
+            }
+
+            var result = await _service.AddAsync(new()
+            {
+                Name = model.Name,
+            });
+
+            if (result.isSuccess)
+            {
+                return Json(result.message);
+            }
+
+            ModelState.AddModelError("", result.message);
+            return Json(new { errors = ModelState });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> CategoryGetById(int id)
+        {
+            var result = await _service.GetByIdAsync(id);
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CategoryEdit(CategoryUpdateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { errors = ModelState });
+            }
+
+            var result = await _service.UpdateAsync(new()
+            {
+                Id = model.Id,
+                Name = model.Name,
+            });
+
+            if (result.isSuccess)
+            {
+                return Json(result.message);
+            }
+
+            ModelState.AddModelError("", result.message);
+            return Json(new { errors = ModelState });
+        }
+
+        [HttpDelete]
+        public async Task<JsonResult> CategoryDelete(CategoryViewModel model)
+        {
+            var result = await _service.DeleteAsync(new()
+            {
+                Id = model.Id,
+                Name = model.Name,
+            });
+
+            if (result.isSuccess)
+            {
+                return Json(result.message);
+            }
+
+            ModelState.AddModelError("", result.message);
+            return Json(new { errors = ModelState });
         }
     }
 }

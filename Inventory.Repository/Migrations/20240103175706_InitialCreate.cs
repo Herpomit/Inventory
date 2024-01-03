@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Inventory.Repository.Migrations
 {
     /// <inheritdoc />
@@ -27,27 +29,6 @@ namespace Inventory.Repository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "EnventoryRole",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NormalizedName = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Discriminator = table.Column<string>(type: "varchar(21)", maxLength: 21, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EnventoryRole", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -208,6 +189,33 @@ namespace Inventory.Repository.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "EnventoryRole",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Discriminator = table.Column<string>(type: "varchar(21)", maxLength: 21, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UsersId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EnventoryRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EnventoryRole_EnventoryUser_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "EnventoryUser",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ProductCategoryMaps",
                 columns: table => new
                 {
@@ -255,6 +263,30 @@ namespace Inventory.Repository.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.InsertData(
+                table: "EnventoryRole",
+                columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName", "UsersId" },
+                values: new object[,]
+                {
+                    { 1, null, "Roles", "Admin", "ADMIN", null },
+                    { 2, null, "Roles", "User", "USER", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EnventoryUser",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, "1f96261b-cd9b-407b-8e32-aa67a60b092e", "Users", "info@admin.com", false, false, null, "INFO@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEE7KgfiMGu5s1JHHGAruq/RIB9T73v6MjChhsd+VlCNh0VwCE7qclXQQOyUu0pFzHA==", "123456789", false, "69e661a7-4eeb-465f-8474-65d73fabce00", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "EnventoryUserRole",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EnventoryRole_UsersId",
+                table: "EnventoryRole",
+                column: "UsersId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_ProductCategoryMaps_CategoryId",
                 table: "ProductCategoryMaps",
@@ -276,9 +308,6 @@ namespace Inventory.Repository.Migrations
                 name: "EnventoryRoleClaim");
 
             migrationBuilder.DropTable(
-                name: "EnventoryUser");
-
-            migrationBuilder.DropTable(
                 name: "EnventoryUserClaim");
 
             migrationBuilder.DropTable(
@@ -298,6 +327,9 @@ namespace Inventory.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "Units");
+
+            migrationBuilder.DropTable(
+                name: "EnventoryUser");
 
             migrationBuilder.DropTable(
                 name: "Categories");

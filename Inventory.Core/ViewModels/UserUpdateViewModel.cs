@@ -20,12 +20,12 @@ namespace Inventory.Core.ViewModels
         [Required(ErrorMessage = "Telefon Numarası Boş Geçilemez!")]
         public string PhoneNumber { get; set; }
 
-        [DataType(DataType.Password)]
         public string? Password { get; set; }
 
-        [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Şifreler Uyuşmuyor!")]
         public string? PasswordConfirm { get; set; }
 
+        [Required(ErrorMessage = "Rol Seçimi Yapınız!")]
+        public int roleId { get; set; }
     }
 }

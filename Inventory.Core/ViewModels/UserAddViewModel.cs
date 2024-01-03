@@ -27,5 +27,8 @@ namespace Inventory.Core.ViewModels
         [Compare("Password", ErrorMessage = "Şifreler Uyuşmuyor!")]
         [DataType(DataType.Password)]
         public string PasswordConfirm { get; set; }
+
+        [Required(ErrorMessage = "Yetki Seviyesi Zorunludur!")]
+        public int roleId { get; set; }
     }
 }
