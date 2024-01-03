@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Inventory.Web</title>
+    @await Html.PartialAsync("~/Views/Shared/Partials/_StylePartialView.cshtml")
+    @await RenderSectionAsync("Styles", required: false)
+    <link rel="stylesheet" href="~/Inventory.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app align-content-stretch d-flex flex-wrap">
+        @if (User.Identity!.IsAuthenticated)
+        {
+            @await Html.PartialAsync("~/Views/Shared/Partials/_SideBarLeftPartialView.cshtml")
+        }
+
+        <div class="app-container">
+            @if (User.Identity!.IsAuthenticated)
+            {
+                @await Html.PartialAsync("~/Views/Shared/Partials/_HeaderPartialView.cshtml")
+            }
+            <div class="app-content">
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+    @await RenderSectionAsync("Modals", required: false)
+
+    @await Html.PartialAsync("~/Views/Shared/Partials/_ScriptPartialView.cshtml")
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Login";
+    ViewBag.LLogin = "active";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventrack Login</title>
+    @await Html.PartialAsync("~/Views/Shared/Partials/_StylePartialView.cshtml")
+</head>
+<body>
+    <div class="app app-auth-sign-up align-content-stretch d-flex flex-wrap justify-content-center">
+        <div class="app-auth-container">
+            <div class="logo">
+                <a>Inventrack</a>
+            </div>
+            <p class="auth-description">Hoş Geldiniz, lütfen giriş Yapın.</p>
+
+            <form id="loginForm">
+                <div class="auth-credentials m-b-xxl">
+                    <label for="loginEmail" class="form-label">Email Adresi</label>
+                    <input type="email" class="form-control m-b-md" id="loginEmail" aria-describedby="signInEmail" placeholder="örnek@mail.com">
+
+                    <label for="loginPassword" class="form-label">Şifre</label>
+                    <input type="password" class="form-control" id="loginPassword" aria-describedby="signInPassword" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+
+                    <div class="form-check mt-4">
+                        <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe" value="true" checked>
+                        <label for="rememberMe" class="form-check-label">Remember Me</label>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="auth-submit">
+                    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                </div>
+                <div class="divider"></div>
+            </form>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Partials/_ScriptPartialView.cshtml")
+    <script asp-append-version="true" src="~/Ajax/Member/login.js" type="module"></script>
+</body>
+</html>
