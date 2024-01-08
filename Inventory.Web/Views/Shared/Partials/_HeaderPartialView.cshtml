@@ -9,6 +9,18 @@
                         <a class="nav-link active">@User.Identity!.Name</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <span>Admin</span>
+                            }
+                            else if (User.IsInRole("User"))
+                            {
+                                <span>User</span>
+                            }
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" asp-action="Logout" asp-controller="Member">Çıkış Yap</a>
                     </li>
                 </ul>

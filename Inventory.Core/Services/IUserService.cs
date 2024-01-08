@@ -22,6 +22,8 @@ namespace Inventory.Core.Services
 
         Task<IEnumerable<string>> GetUserRole(int id);
 
+        Task<RoleViewModel> GetRoleUser(int id);
+
         Task<IEnumerable<RoleViewModel>> GetRolesAsync();
 
         Task<(bool isSuccess, string message)> LoginAsync(LoginViewModel model);

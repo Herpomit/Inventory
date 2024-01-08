@@ -33,12 +33,12 @@ namespace Inventory.Web.Controllers
                 Name = model.Name,
             });
 
-            if (result.isSuccess)
+            if (result != null)
             {
-                return Json(result.message);
+                return Json("Kategori Başarılı Bir Şekilde Eklendi!");
             }
 
-            ModelState.AddModelError("", result.message);
+            ModelState.AddModelError(string.Empty,"Kategori Eklenemedi!");
             return Json(new { errors = ModelState });
         }
 
@@ -63,12 +63,12 @@ namespace Inventory.Web.Controllers
                 Name = model.Name,
             });
 
-            if (result.isSuccess)
+            if (result != null)
             {
-                return Json(result.message);
+                return Json("Kategori Başarılı Bir Şekilde Güncellendi!");
             }
 
-            ModelState.AddModelError("", result.message);
+            ModelState.AddModelError(string.Empty, "Kategori Güncellenemedi!");
             return Json(new { errors = ModelState });
         }
 
@@ -81,12 +81,12 @@ namespace Inventory.Web.Controllers
                 Name = model.Name,
             });
 
-            if (result.isSuccess)
+            if (result)
             {
-                return Json(result.message);
+                return Json("Kategori Başarılı Bir Şekilde Silindi!!");
             }
 
-            ModelState.AddModelError("", result.message);
+            ModelState.AddModelError(string.Empty, "Kategori Silinemedi!");
             return Json(new { errors = ModelState });
         }
     }

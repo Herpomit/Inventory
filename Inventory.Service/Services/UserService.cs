@@ -250,6 +250,19 @@ namespace Inventory.Service.Services
 
             return roles;
         }
+
+        public async Task<RoleViewModel> GetRoleUser(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var userRoles = await _userManager.GetRolesAsync(user!);
+            var role = await _roleManager.FindByNameAsync(userRoles[0]);
+            RoleViewModel model = new RoleViewModel
+            {
+                Id = role!.Id,
+                Name = role.Name!
+            };
+            return model;
+        }
         #endregion
 
 

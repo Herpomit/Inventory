@@ -1,0 +1,68 @@
+﻿@model ProductViewModel
+@{
+    ViewData["Title"] = "Products";
+    ViewBag.Products = "active";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Panel/plugins/bootstrapv5-multiselect/css/bootstrap-multiselect.css" />
+}
+
+@section Scripts {
+    <script src="~/Panel/plugins/bootstrapv5-multiselect/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/Ajax/Products/Edit.js" asp-append-version="true" type="module"></script>
+    <script>
+        $('#editCategories').select2();
+    </script>
+}
+
+<form id="editForm" class="form-group">
+    <div class="card">
+        <div class="card-header">
+            <h3>Ürün Güncelle</h3>
+        </div>
+        <div class="divider"></div>
+        <div class="card-body">
+            <div class="row">
+                <input type="hidden" id="productId" value="@Model.Id" />
+                <div class="col-xl-6 mb-2">
+                    <label for="editName" class="form-label">Ürün Adı <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" id="editName" name="editName" placeholder="Ürün Adı" value="@Model.Name" required>
+                </div>
+                <div class="col-xl-6 mb-2">
+                    <label for="editCategories" class="form-label">Kategori <i class="text-danger">*</i></label>
+                    <select class="form-control" multiple="multiple" data-plugin-multiselect
+                            data-plugin-options='{"maxHeight": 200, "enableCaseInsensitiveFiltering": true}'
+                            id="editCategories" required>
+                        @{
+                            List<int> selectedCategoryIds = new();
+
+                            foreach (var item in ViewBag.ProductCategoryMap)
+                            {
+                                selectedCategoryIds.Add(item.CategoryId);
+                            }
+
+                            foreach (var item in ViewBag.Categories)
+                            {
+                                if (selectedCategoryIds.Contains(item.Id))
+                                {
+                                    <option value="@item.Id" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+
+                    </select>
+
+                </div>
+                <div class="divider"></div>
+                <div class="col-xl-6">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

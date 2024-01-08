@@ -10,7 +10,7 @@ namespace Inventory.Core.ViewModels
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Eposta Boş Geçilemez.")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Eposta Adresi Geçersiz!")]
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "Şifre Boş Geçilemez.")]

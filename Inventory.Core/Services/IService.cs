@@ -13,13 +13,15 @@ namespace Inventory.Core.Services
 
         Task<T> GetByIdAsync(int id);
 
+        IQueryable<T> Where(Expression<Func<T, bool>> predicate);
+
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
 
-        Task<(bool isSuccess,string message)> AddAsync(T entity);
+        Task<T> AddAsync(T entity);
 
-        Task<(bool isSuccess, string message)> UpdateAsync(T entity);
+        Task<T> UpdateAsync(T entity);
 
-        Task<(bool isSuccess, string message)> DeleteAsync(T entity);
+        Task<bool> DeleteAsync(T entity);
 
     }
 }

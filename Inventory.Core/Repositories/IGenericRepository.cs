@@ -13,6 +13,8 @@ namespace Inventory.Core.Repositories
 
         Task<T> GetByIdAsync(int id);
 
+        IQueryable<T> Where(Expression<Func<T, bool>> expression);
+
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
 
         Task AddAsync(T entity);

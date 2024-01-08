@@ -23,11 +23,11 @@ namespace Inventory.Service.Services
             _repository = repository;
         }
 
-        public async Task<(bool isSuccess, string message)> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
             await _repository.AddAsync(entity);
             await _unitOfWork.CommitAsync();
-            return (true, "Başarılı Bir Şekilde Eklendi!");
+            return entity;
         }
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
@@ -35,11 +35,11 @@ namespace Inventory.Service.Services
             return await _repository.AnyAsync(predicate);
         }
 
-        public async Task<(bool isSuccess, string message)> DeleteAsync(T entity)
+        public async Task<bool> DeleteAsync(T entity)
         {
             _repository.Remove(entity);
             await _unitOfWork.CommitAsync();
-            return (true, "Başarılı Bir Şekilde Silindi!");
+            return true;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -52,11 +52,16 @@ namespace Inventory.Service.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<(bool isSuccess, string message)> UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             _repository.Update(entity);
             await _unitOfWork.CommitAsync();
-            return (true, "Başarılı Bir Şekilde Güncellendi!");
+            return entity;
+        }
+
+        public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
+        {
+            return _repository.Where(predicate);
         }
     }
 }
