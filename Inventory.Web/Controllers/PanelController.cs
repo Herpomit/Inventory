@@ -28,43 +28,47 @@ namespace Inventory.Web.Controllers
 
         private int activeUserId => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier!)!);
 
-        void role()
-        {
-            var role = _userService.GetRoleUser(activeUserId);
+        //void role()
+        //{
+        //    var role = _userService.GetRoleUser(activeUserId);
 
-            if (role.Id == 1)
-            {
-                ViewBag.Role = "Admin";
-            }
-            else if (role.Id == 2)
-            {
-                ViewBag.Role = "User";
-            }
-        }
+        //    if (role.Id == 1)
+        //    {
+        //        ViewBag.Role = "Admin";
+        //    }
+        //    else if (role.Id == 2)
+        //    {
+        //        ViewBag.Role = "User";
+        //    }
+        //}
 
 
 
         public IActionResult Index()
         {
-            role();
             return View();
         }
 
+        public IActionResult StockedProducts()
+        {
+            return View();
+        }
+
+
         public IActionResult Categories()
         {
-            role();
+
             return View();
         }
 
         public IActionResult Products()
-        { 
-            role();
+        {
+
             return View();
         }
 
         public async Task<IActionResult> ProductAdd()
         {
-            role();
             var categories = await _categoryService.GetAllAsync();
             ViewBag.Categories = categories;
             return View();
@@ -72,9 +76,6 @@ namespace Inventory.Web.Controllers
 
         public async Task<IActionResult> ProductEdit(int id)
         {
-            role();
-
-
             var product = await _productService.GetByIdAsync(id);
             ProductViewModel productViewModel = new ProductViewModel();
             productViewModel.Id = product.Id;
@@ -89,7 +90,7 @@ namespace Inventory.Web.Controllers
         #region Units
         public IActionResult Units()
         {
-            role();
+
             return View();
         }
         #endregion
@@ -97,13 +98,12 @@ namespace Inventory.Web.Controllers
         #region Users
         public IActionResult Users()
         {
-            role();
+
             return View();
         }
 
         public async Task<IActionResult> UserAdd()
         {
-            role();
             var roles = await _userService.GetRolesAsync();
 
             ViewBag.Roles = roles;
@@ -114,9 +114,6 @@ namespace Inventory.Web.Controllers
         [Route("/Panel/UserEdit/{id}")]
         public async Task<IActionResult> UserEdit(int id)
         {
-            role();
-
-
             var user = await _userService.GetByIdAsync(id);
             var roles = await _userService.GetRolesAsync();
             var userRole = await _userService.GetUserRole(id);

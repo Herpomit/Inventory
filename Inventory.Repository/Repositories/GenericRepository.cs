@@ -45,6 +45,11 @@ namespace Inventory.Repository.Repositories
             _dbSet.Remove(entity);
         }
 
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+
         public void Update(T entity)
         {
             _dbSet.Update(entity);

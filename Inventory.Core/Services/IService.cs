@@ -23,5 +23,7 @@ namespace Inventory.Core.Services
 
         Task<bool> DeleteAsync(T entity);
 
+        Task<bool> DeleteRangeAsync(IEnumerable<T> entities);
+
     }
 }

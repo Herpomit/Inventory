@@ -80,21 +80,16 @@ namespace Inventory.Web.Controllers
             if (result != null)
             {
                 var all = await _productCategoryService.GetByProductIdAsync(model.Id);
-                foreach (var item in all)
-                {
-                    await _productCategoryService.DeleteAsync(item);
-                }
+                
+                await _productCategoryService.DeleteRangeAsync(all);
+
                 foreach (var item in model.categoryIds)
                 {
-                    var check = await _productCategoryService.AnyAsync(x => x.CategoryId == item && x.ProductId == result.Id);
-                    if (!check)
+                    await _productCategoryService.AddAsync(new()
                     {
-                        await _productCategoryService.AddAsync(new()
-                        {
-                            CategoryId = item,
-                            ProductId = result.Id
-                        });
-                    }
+                        CategoryId = item,
+                        ProductId = result.Id
+                    });
                 }
                 return Json("Ürün Güncellendi!");
             }
@@ -115,13 +110,7 @@ namespace Inventory.Web.Controllers
             if (result)
             {
                 var all = await _productCategoryService.GetByProductIdAsync(id);
-
-                foreach (var item in all)
-                {
-                    await _productCategoryService.DeleteAsync(item);
-                }
-
-
+                await _productCategoryService.DeleteRangeAsync(all);
                 return Json("Ürün Silindi!");
             }
             return Json(new { success = false, message = "Ürün Silinemedi!" });

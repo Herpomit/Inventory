@@ -8,10 +8,12 @@ namespace Inventory.Web.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService _service;
+        private readonly IProductCategoryMapService _productCategoryMapService;
 
-        public CategoryController(ICategoryService service)
+        public CategoryController(ICategoryService service, IProductCategoryMapService productCategoryMapService)
         {
             _service = service;
+            _productCategoryMapService = productCategoryMapService;
         }
 
         public async Task<JsonResult> CategoryTable(int draw, int start, int length, string orderColumnName, string orderDir, [FromForm] Search search)
@@ -83,6 +85,8 @@ namespace Inventory.Web.Controllers
 
             if (result)
             {
+                var all = await _productCategoryMapService.GetByCategoryIdAsync(model.Id);
+                await _productCategoryMapService.DeleteRangeAsync(all);
                 return Json("Kategori Başarılı Bir Şekilde Silindi!!");
             }
 

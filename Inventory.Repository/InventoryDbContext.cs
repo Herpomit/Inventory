@@ -28,9 +28,15 @@ namespace Inventory.Repository
 
         public DbSet<ProductCategoryMap> ProductCategoryMaps { get; set; }
 
+        public DbSet<StockedProductUnitMap> StockedProductUnitMaps { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ProductCategoryMap>().HasKey(x => new { x.ProductId, x.CategoryId });
+            builder.Entity<StockedProductUnitMap>().Property(x => x.weight).HasColumnType("decimal(18,2)");
+
+            builder.Entity<Unit>().Property(x => x.ConversionFactor).HasColumnType("decimal(18,2)");
+
 
             builder.Entity<IdentityUserLogin<int>>().ToTable("EnventoryUserLogin").HasKey(x => x.UserId);
             builder.Entity<IdentityUserRole<int>>().ToTable("EnventoryUserRole").HasKey(x => new { x.UserId, x.RoleId });

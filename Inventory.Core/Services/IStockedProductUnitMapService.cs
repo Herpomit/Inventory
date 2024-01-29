@@ -1,5 +1,4 @@
 ﻿using Inventory.Core.Models;
-using Inventory.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Core.Services
 {
-    public interface IStockProductService : IService<StockedProduct>
+    public interface IStockedProductUnitMapService: IService<StockedProductUnitMap>
     {
-        Task<List<StockProductViewModel>> GetAllWithProductAsync();
     }
 }

@@ -14,5 +14,6 @@ namespace Inventory.Core.Models
 
         public string Code { get; set; }
 
+        public decimal ConversionFactor { get; set; }
     }
 }

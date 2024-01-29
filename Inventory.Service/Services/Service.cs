@@ -42,6 +42,13 @@ namespace Inventory.Service.Services
             return true;
         }
 
+        public async Task<bool> DeleteRangeAsync(IEnumerable<T> entities)
+        {
+            _repository.RemoveRange(entities);
+            await _unitOfWork.CommitAsync();
+            return true;
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _repository.GetAll().ToListAsync();
